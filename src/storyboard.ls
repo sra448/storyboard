@@ -1,21 +1,14 @@
-{ DOM } = require \react
+{ create-store } = require \redux
+{ create-element, DOM } = require \react
 { render } = require \react-dom
-{ Graph } = require \graphlib
-{ div } = DOM
+{ Provider } = require \react-redux
 
-editor = require "./editor.ls"
-player = require "./player.ls"
-
-
-model =
-  current-node: 1
-  graph: (new Graph).set-node 1, "hello?"
+reducer = require "./reducer.ls"
+ui = require "./ui.ls"
 
 
-ui = ->
-  div { style: { display: \flex, width: "100%" } },
-    player { model }
-    editor { model }
+store = create-store reducer
+app = create-element Provider, { store }, ui {}
 
 
-render (ui {}), document.get-element-by-id \storyboard
+render app, document.get-element-by-id \storyboard

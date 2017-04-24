@@ -1,12 +1,24 @@
+{ connect } = require \react-redux
 { DOM } = require \react
 { div } = DOM
 
 
-node = ({ model })->
-  current-value = model.graph.node 1
-  div {}, current-value
+node = ({ graph })->
+  value = graph.node 1
+  div {}, value
 
 
-module.exports = ({ model }) ->
+player = ({ graph }) ->
   div { style: { flex: "1 1" } },
-    node { model }
+    node { graph }
+
+
+map-state-to-props = ({ graph, foo }) ->
+  { graph, foo }
+
+
+map-dispatch-to-props = (dispatch) ->
+  { on-slot-click: (id) -> dispatch { type: \SLOT_FREE, id } }
+
+
+module.exports = player |> connect map-state-to-props, map-dispatch-to-props
