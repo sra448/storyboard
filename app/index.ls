@@ -3,8 +3,9 @@
 { render } = require \react-dom
 { Provider } = require \react-redux
 
-reducer = require "./reducer.ls"
-ui = require "./ui.ls"
+
+reducer = require "./logic/reducer.ls"
+ui = require "./representation/storyboard.ls"
 
 
 store = create-store reducer

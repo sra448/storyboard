@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    "storyboard": "./src/storyboard.ls"
+    "app/index": "./app/index.ls"
   },
   output: {
     path: __dirname,
