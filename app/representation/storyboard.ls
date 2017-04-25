@@ -4,8 +4,10 @@
 editor = require "./editor.ls"
 player = require "./player.ls"
 
+require "./style.scss"
 
-module.exports = ({ model }) ->
-  div { style: { display: \flex, width: "100%" } },
-    create-element player, { model }
-    create-element editor, { model }
+
+module.exports = ->
+  div { class-name: "storyboard" },
+    # create-element player, {}
+    create-element editor, {}

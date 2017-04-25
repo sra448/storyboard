@@ -12,7 +12,11 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "css-loader": "^0.28.0",
     "livescript-loader": "^0.1.6",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
     "webpack": "^2.4.1"
   },
   "scripts": {

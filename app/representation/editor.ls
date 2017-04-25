@@ -1,27 +1,34 @@
 { connect } = require \react-redux
 { DOM } = require \react
-{ div, input, button } = DOM
+{ div, textarea, button } = DOM
 
 
-node = ({ id, value, on-change-text, on-add-child })->
-  div {},
-    input { value, on-change: on-change-text id }
-    button { on-click: on-add-child id }, "add child node"
+node = ({ id, value, class-name, on-change-text, on-add-child })->
+  class-name = ["node", class-name].join " "
+  div { class-name },
+    textarea { value, on-change: on-change-text id }
+    button { on-click: on-add-child id }, "+"
 
 
 nodes = ({ graph, current-node, on-change-text, on-add-child }) ->
   value = graph.node current-node
   edges = graph.out-edges current-node
+  parent = (graph.in-edges current-node)[0]?.v
+  is-him = if parent then (graph.out-edges parent).length == 1 else true
+  class-name = "him" if is-him
 
-  div {},
-    node { id: current-node, value, on-change-text, on-add-child }
-    if edges.length > 0
-      edges.map (n) ->
-        nodes { key: n.w, current-node: n.w, graph, on-change-text, on-add-child }
+  if edges.length == 0
+    node { id: current-node, value, class-name, on-change-text, on-add-child }
+  else
+    div {},
+      node { id: current-node, value, class-name, on-change-text, on-add-child }
+      div { class-name: "children" },
+        edges.map (n) ->
+          nodes { key: n.w, current-node: n.w, graph, on-change-text, on-add-child }
 
 
 editor = ({ graph, on-change-text, on-add-child }) ->
-  div { style: { flex: "1 1" } },
+  div {},
     nodes { current-node: 0, graph, on-change-text, on-add-child }
 
 
