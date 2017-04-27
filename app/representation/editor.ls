@@ -28,7 +28,7 @@ nodes = ({ graph, current-node, on-change-text, on-add-child }) ->
 
 
 editor = ({ graph, on-change-text, on-add-child }) ->
-  div {},
+  div { class-name: "editor" },
     nodes { current-node: 0, graph, on-change-text, on-add-child }
 
 

@@ -1,24 +1,38 @@
 { connect } = require \react-redux
 { DOM } = require \react
-{ div } = DOM
+{ div, button } = DOM
 
 
-node = ({ graph })->
-  value = graph.node 1
-  div {}, value
+message = ({ graph, current-node })->
+  value = graph.node current-node
+  div { class-name: "message" }, value
 
 
-player = ({ graph }) ->
-  div { style: { flex: "1 1" } },
-    node { graph }
+messages = ({ history }) ->
+  div {},
+    for { who, text } in history
+      div { class-name: "message #{who}"}, text
 
 
-map-state-to-props = ({ graph, foo }) ->
-  { graph, foo }
+answers = ({ graph, current-node, on-decision }) ->
+  div {},
+    for { w, v } in graph.out-edges current-node
+      button { class-name: "answer", on-click: on-decision w }, graph.node w
+
+
+player = ({ graph, current-node, history, on-decision }) ->
+  div { class-name: "player" },
+    messages { history }
+    answers { graph, current-node, on-decision } if (graph.out-edges current-node)?.length > 0
+
+
+map-state-to-props = ({ graph, current-node, history, foo }) ->
+  { graph, current-node, history, foo }
 
 
 map-dispatch-to-props = (dispatch) ->
-  { on-slot-click: (id) -> dispatch { type: \SLOT_FREE, id } }
+  on-decision: (id) -> -> dispatch { type: \CHOOSE_NEXT_NODE, id }
+
 
 
 module.exports = player |> connect map-state-to-props, map-dispatch-to-props
