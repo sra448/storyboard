@@ -20,10 +20,13 @@ answers = ({ graph, current-node, on-decision }) ->
       button { class-name: "answer", on-click: on-decision w }, graph.node w
 
 
-player = ({ graph, current-node, history, on-decision }) ->
+player = ({ graph, current-node, history, on-reset-player, on-decision }) ->
   div { class-name: "player" },
+    button { on-click: on-reset-player }, "reset player"
     messages { history }
     answers { graph, current-node, on-decision } if (graph.out-edges current-node)?.length > 0
+
+
 
 
 map-state-to-props = ({ graph, current-node, history, foo }) ->
@@ -32,6 +35,7 @@ map-state-to-props = ({ graph, current-node, history, foo }) ->
 
 map-dispatch-to-props = (dispatch) ->
   on-decision: (id) -> -> dispatch { type: \CHOOSE_NEXT_NODE, id }
+  on-reset-player: -> dispatch { type: \RESET_PLAYER }
 
 
 

@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "graphlib": "^2.1.1",
+    "guid": "^0.0.12",
     "prelude-ls": "^1.1.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
