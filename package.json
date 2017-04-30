@@ -9,6 +9,7 @@
     "prelude-ls": "^1.1.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-draggable": "^2.2.5",
     "react-redux": "^5.0.4",
     "redux": "^3.6.0"
   },

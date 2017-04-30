@@ -1,25 +1,28 @@
 { connect } = require \react-redux
-{ DOM } = require \react
+{ DOM, create-element } = require \react
 { div, textarea, button } = DOM
+Draggable = require \react-draggable
 
 
 node = ({ id, content, on-change-text, on-add-child }) ->
-  div { class-name: "node", style: { top: content.y, left: content.x } },
+  div { class-name: "node" },
     textarea { value: content.text, on-change: on-change-text id }
     button { on-click: on-add-child id }, "+"
 
 
-nodes = ({ graph, on-change-text, on-add-child }) ->
+nodes = ({ graph, on-change-text, on-change-position, on-add-child }) ->
   div { class-name: "nodes" },
     graph.nodes().map (id) ->
       content = graph.node id
-      node { key: id, id, content, on-change-text, on-add-child }
+      position = { x: content.x, y: content.y }
+      create-element Draggable, { position, grid: [20, 20], on-stop: on-change-position id },
+        node { key: id, id, content, on-change-text, on-add-child }
 
 
-editor = ({ graph, on-change-text, on-reset-editor, on-add-child }) ->
+editor = ({ graph, on-reset-editor, on-change-text, on-change-position, on-add-child }) ->
   div { class-name: "editor" },
     button { on-click: on-reset-editor }, "reset editor"
-    nodes { current-node: 0, graph, on-change-text, on-add-child }
+    nodes { current-node: 0, graph, on-change-text, on-change-position, on-add-child }
 
 
 
@@ -30,6 +33,8 @@ map-state-to-props = ({ graph, foo }) ->
 
 map-dispatch-to-props = (dispatch) ->
   on-change-text: (id) -> ({ target }) -> dispatch { type: \CHANGE_NODE_TEXT, text: target.value, id }
+  on-change-position: (id) -> (e, { x, y }) ->
+    dispatch { type: \CHANGE_NODE_POSITION, id, x: (Math.round x / 20) * 20, y: (Math.round y / 20) * 20 }
   on-add-child: (id) -> -> dispatch { type: \ADD_CHILD_NODE, id }
   on-reset-editor: -> dispatch { type: \RESET_EDITOR }
 
