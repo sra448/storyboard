@@ -1,46 +1,50 @@
 { connect } = require \react-redux
-{ DOM } = require \react
-{ div, textarea, button } = DOM
+{ DOM, create-element } = require \react
+{ div, textarea, button, svg, line } = DOM
+Draggable = require \react-draggable
 
 
-node = ({ id, value, class-name, on-change-text, on-add-child })->
-  class-name = ["node", class-name].join " "
-  div { class-name },
-    textarea { value, on-change: on-change-text id }
-    button { on-click: on-add-child id }, "+"
+node = ({ id, content, on-change-text, on-add-child }) ->
+  div { class-name: "node" },
+    textarea { value: content.text, on-change: on-change-text id }
+    button { id: id, class-name: "new-edge", on-click: on-add-child id }, "+"
 
 
-nodes = ({ graph, current-node, on-change-text, on-add-child }) ->
-  value = graph.node current-node
-  edges = graph.out-edges current-node
-  parent = (graph.in-edges current-node)[0]?.v
-  is-him = if parent then (graph.out-edges parent).length == 1 else true
-  class-name = "him" if is-him
-
-  if edges.length == 0
-    node { id: current-node, value, class-name, on-change-text, on-add-child }
-  else
-    div {},
-      node { id: current-node, value, class-name, on-change-text, on-add-child }
-      div { class-name: "children" },
-        edges.map (n) ->
-          nodes { key: n.w, current-node: n.w, graph, on-change-text, on-add-child }
+nodes = ({ graph, on-change-text, on-change-position, on-add-child }) ->
+  div { class-name: "nodes" },
+    graph.nodes().map (id) ->
+      content = graph.node id
+      position = { x: content.x, y: content.y }
+      create-element Draggable, { position, grid: [20, 20], on-drag: on-change-position id },
+        node { key: id, id, content, on-change-text, on-add-child }
 
 
-editor = ({ graph, on-change-text, on-reset-editor, on-add-child }) ->
+edges = ({ graph, temp-edge }) ->
+  svg { width: "100%", height: "100%" },
+    line temp-edge if temp-edge
+    graph.edges().map ({ v, w }) ->
+      parent = graph.node v
+      child = graph.node w
+      line { x1: parent.x + 50, y1: parent.y + 60, x2: child.x + 50, y2: child.y }
+
+
+editor = ({ graph, temp-edge, on-reset-editor, on-change-text, on-change-position, on-add-child }) ->
   div { class-name: "editor" },
     button { on-click: on-reset-editor }, "reset editor"
-    nodes { current-node: 0, graph, on-change-text, on-add-child }
+    nodes { graph, on-change-text, on-change-position, on-add-child }
+    edges { graph, temp-edge }
 
 
 
 
-map-state-to-props = ({ graph, foo }) ->
-  { graph, foo }
+map-state-to-props = ({ graph, temp-edge, foo }) ->
+  { graph, temp-edge, foo }
 
 
 map-dispatch-to-props = (dispatch) ->
   on-change-text: (id) -> ({ target }) -> dispatch { type: \CHANGE_NODE_TEXT, text: target.value, id }
+  on-change-position: (id) -> (e, { x, y }) ->
+    dispatch { type: \CHANGE_NODE_POSITION, id, x: (Math.round x / 20) * 20, y: (Math.round y / 20) * 20 }
   on-add-child: (id) -> -> dispatch { type: \ADD_CHILD_NODE, id }
   on-reset-editor: -> dispatch { type: \RESET_EDITOR }
 

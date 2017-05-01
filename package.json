@@ -9,8 +9,10 @@
     "prelude-ls": "^1.1.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-draggable": "^2.2.5",
     "react-redux": "^5.0.4",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "rx": "^4.1.0"
   },
   "devDependencies": {
     "css-loader": "^0.28.0",

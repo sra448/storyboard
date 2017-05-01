@@ -9,5 +9,5 @@ require "./style.scss"
 
 module.exports = ->
   div { class-name: "storyboard" },
-    create-element player, {}
+    # create-element player, {}
     create-element editor, {}
