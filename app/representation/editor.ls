@@ -7,7 +7,7 @@ Draggable = require \react-draggable
 node = ({ id, content, on-change-text, on-add-child }) ->
   div { class-name: "node" },
     textarea { value: content.text, on-change: on-change-text id }
-    button { on-click: on-add-child id }, "+"
+    button { id: id, class-name: "new-edge", on-click: on-add-child id }, "+"
 
 
 nodes = ({ graph, on-change-text, on-change-position, on-add-child }) ->
@@ -19,25 +19,26 @@ nodes = ({ graph, on-change-text, on-change-position, on-add-child }) ->
         node { key: id, id, content, on-change-text, on-add-child }
 
 
-edges = ({ graph }) ->
+edges = ({ graph, temp-edge }) ->
   svg { width: "100%", height: "100%" },
+    line temp-edge if temp-edge
     graph.edges().map ({ v, w }) ->
       parent = graph.node v
       child = graph.node w
       line { x1: parent.x + 50, y1: parent.y + 60, x2: child.x + 50, y2: child.y }
 
 
-editor = ({ graph, on-reset-editor, on-change-text, on-change-position, on-add-child }) ->
+editor = ({ graph, temp-edge, on-reset-editor, on-change-text, on-change-position, on-add-child }) ->
   div { class-name: "editor" },
     button { on-click: on-reset-editor }, "reset editor"
     nodes { graph, on-change-text, on-change-position, on-add-child }
-    edges { graph }
+    edges { graph, temp-edge }
 
 
 
 
-map-state-to-props = ({ graph, foo }) ->
-  { graph, foo }
+map-state-to-props = ({ graph, temp-edge, foo }) ->
+  { graph, temp-edge, foo }
 
 
 map-dispatch-to-props = (dispatch) ->

@@ -62,11 +62,34 @@ choose-next-node = (state, id) ->
   { ...state, history, current-node: answer.w }
 
 
+add-temp-edge = (state, id) ->
+  parent = state.graph.node id
+  { ...state, temp-edge: { id, x1: parent.x + 50, y1: parent.y + 60, x2: parent.x + 50, y2: parent.y + 30 }}
+
+
+change-temp-edge-position = (state, x, y) ->
+  edge = state.temp-edge
+  { ...state, temp-edge: { ...edge, x2: x, y2: y }}
+
+
+close-temp-edge = (state) ->
+  { temp-edge } = state
+  nodes = state.graph.nodes().filter (id) ->
+    { x, y } = state.graph.node id
+    x <= temp-edge.x2 <= x + 100 && y <= temp-edge.y2 <= y + 60
+
+  if nodes.length == 1 && nodes[0] != temp-edge.id
+    state.graph.set-edge temp-edge.id, nodes[0]
+    
+  { ...state, temp-edge: undefined }
+
+
 
 initial-state = retrieve-data() || do
   foo: 1 # this is a hack, since the graph is being mutated :/
   current-node: 0
   history: [{ who: \him, text: "hello?" }]
+  temp-edge: undefined
   graph: (new Graph).set-node 0, { text: "hello?", x: 0, y: 0 }
 
 
@@ -79,6 +102,9 @@ module.exports = (state = initial-state, action) ->
     case \CHANGE_NODE_POSITION then change-node-position state, action.id, action.x, action.y
     case \ADD_CHILD_NODE then add-child-node state, action.id
     case \CHOOSE_NEXT_NODE then choose-next-node state, action.id
+    case \ADD_TEMP_EDGE then add-temp-edge state, action.id
+    case \CHANGE_TEMP_EDGE_POSITION then change-temp-edge-position state, action.x, action.y
+    case \CLOSE_TEMP_EDGE then close-temp-edge state
     default state
   save-data new-state
   new-state
