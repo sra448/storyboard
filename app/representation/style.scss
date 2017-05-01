@@ -51,13 +51,17 @@ body {
     right: 0;
     bottom: 0;
 
+    line {
+      stroke: black;
+    }
+
     .nodes {
       position: relative;
     }
 
     .node {
       position: absolute;
-      margin-top: 2px;
+      margin-top: 1px;
       width: 89px;
       height: 49px;
       padding: 4px;
@@ -70,6 +74,7 @@ body {
         height: 30px;
         background: transparent;
         border: none;
+        cursor: pointer;
       }
 
       button {

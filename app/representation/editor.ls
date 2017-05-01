@@ -1,6 +1,6 @@
 { connect } = require \react-redux
 { DOM, create-element } = require \react
-{ div, textarea, button } = DOM
+{ div, textarea, button, svg, line } = DOM
 Draggable = require \react-draggable
 
 
@@ -15,14 +15,23 @@ nodes = ({ graph, on-change-text, on-change-position, on-add-child }) ->
     graph.nodes().map (id) ->
       content = graph.node id
       position = { x: content.x, y: content.y }
-      create-element Draggable, { position, grid: [20, 20], on-stop: on-change-position id },
+      create-element Draggable, { position, grid: [20, 20], on-drag: on-change-position id },
         node { key: id, id, content, on-change-text, on-add-child }
+
+
+edges = ({ graph }) ->
+  svg { width: "100%", height: "100%" },
+    graph.edges().map ({ v, w }) ->
+      parent = graph.node v
+      child = graph.node w
+      line { x1: parent.x + 50, y1: parent.y + 60, x2: child.x + 50, y2: child.y }
 
 
 editor = ({ graph, on-reset-editor, on-change-text, on-change-position, on-add-child }) ->
   div { class-name: "editor" },
     button { on-click: on-reset-editor }, "reset editor"
-    nodes { current-node: 0, graph, on-change-text, on-change-position, on-add-child }
+    nodes { graph, on-change-text, on-change-position, on-add-child }
+    edges { graph }
 
 
 
