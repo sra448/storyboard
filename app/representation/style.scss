@@ -65,14 +65,12 @@ body {
       top: 20px;
     }
 
-    line {
+    line, path {
       stroke: black;
       z-index: 999999;
+      fill: none;
     }
 
-    marker {
-      z-index: 999;
-    }
 
     .nodes {
       position: relative;

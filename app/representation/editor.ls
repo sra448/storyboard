@@ -23,14 +23,18 @@ nodes = ({ graph, on-change-text, on-change-position, on-add-child }) ->
 edge = ({ graph, v, w }) ->
   parent = graph.node v
   child = graph.node w
+  x1 = parent.x + 50
+  y1 = parent.y + 60
+  x2 = child.x + 50
+  y2 = child.y
 
-  line do
-      key: "#{v}:#{w}"
-      marker-end: "url(\#arrow)"
-      x1: parent.x + 50
-      y1: parent.y + 60
-      x2: child.x + 50
-      y2: child.y - 2
+  if y2 <= y1
+    # path { d: "M#{x1} #{y1} C#{x1} #{y1}, #{x2 + 20} #{y2 + 20}, #{x2} #{y2}"}
+    width = x2 - x1
+    height = y1 - y2
+    path { d: "M#{x1} #{y1} v20 h#{width / 2} v-#{height + 40} h#{width / 2} v20", marker-end: "url(\#arrow)"}
+  else
+    line { key: "#{v}:#{w}", marker-end: "url(\#arrow)", x1, y1, x2, y2: y2 - 2 }
 
 
 edges = ({ graph, temp-edge }) ->
