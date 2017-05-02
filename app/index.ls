@@ -43,7 +43,7 @@ draw-edge.subscribe (action) ->
 
 
 mouse-coords-to-tile-coords = ({ page-x, page-y }) ->
-  { x: page-x, y: page-y - 20 }
+  { x: page-x, y: page-y }
 
 
 render app, ROOT
