@@ -25,7 +25,7 @@ edges = ({ graph, temp-edge }) ->
     graph.edges().map ({ v, w }) ->
       parent = graph.node v
       child = graph.node w
-      line { x1: parent.x + 50, y1: parent.y + 60, x2: child.x + 50, y2: child.y }
+      line { key: "#{v}:#{w}", x1: parent.x + 50, y1: parent.y + 60, x2: child.x + 50, y2: child.y }
 
 
 editor = ({ graph, temp-edge, on-reset-editor, on-change-text, on-change-position, on-add-child }) ->

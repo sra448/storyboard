@@ -13,13 +13,13 @@ retrieve-data = ->
 
 
 reset-player = (state) ->
-  history = [{ who: \him, text: state.graph.node 0 }]
-  { ...state, history, current-node: 0 }
+  history = [{ who: \him, id: "0" }]
+  { ...state, history, current-node: "0" }
 
 
 reset-editor = (state) ->
-  history = [{ who: \him, text: "hello?" }]
-  { ...state, history, graph: (new Graph).set-node 0, "hello?" }
+  history = [{ who: \him, id: "hello?" }]
+  { ...state, history, graph: (new Graph).set-node "0", { who: \him, id: "hello?" } }
 
 
 change-node-text = (state, id, text) ->
@@ -56,8 +56,8 @@ add-child-node = (state, parent-id) ->
 
 choose-next-node = (state, id) ->
   answer = (state.graph.out-edges id)?[0] || {}
-  me = { who: \me, text: state.graph.node id }
-  him = { who: \him, text: state.graph.node answer.w }
+  me = { who: \me, id: id }
+  him = { who: \him, id: answer.w }
   history = [...state.history, me, him]
   { ...state, history, current-node: answer.w }
 
@@ -80,7 +80,7 @@ close-temp-edge = (state) ->
 
   if nodes.length == 1 && nodes[0] != temp-edge.id
     state.graph.set-edge temp-edge.id, nodes[0]
-    
+
   { ...state, temp-edge: undefined }
 
 
@@ -88,9 +88,9 @@ close-temp-edge = (state) ->
 initial-state = retrieve-data() || do
   foo: 1 # this is a hack, since the graph is being mutated :/
   current-node: 0
-  history: [{ who: \him, text: "hello?" }]
+  history: [{ who: \him, id: "0" }]
   temp-edge: undefined
-  graph: (new Graph).set-node 0, { text: "hello?", x: 0, y: 0 }
+  graph: (new Graph).set-node "0", { text: "hello?", x: 300, y: 50 }
 
 
 module.exports = (state = initial-state, action) ->

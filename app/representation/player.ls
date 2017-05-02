@@ -3,27 +3,22 @@
 { div, button } = DOM
 
 
-message = ({ graph, current-node })->
-  value = graph.node current-node
-  div { class-name: "message" }, value
-
-
-messages = ({ history }) ->
+messages = ({ graph, history }) ->
   div {},
-    for { who, text } in history
-      div { class-name: "message #{who}"}, text
+    for { who, id } in history
+      div { key: "m#{id}", class-name: "message #{who}"}, (graph.node id).text
 
 
 answers = ({ graph, current-node, on-decision }) ->
   div {},
     for { w, v } in graph.out-edges current-node
-      button { class-name: "answer", on-click: on-decision w }, graph.node w
+      button { key: "a#{w}", class-name: "answer", on-click: on-decision w }, (graph.node w).text
 
 
 player = ({ graph, current-node, history, on-reset-player, on-decision }) ->
   div { class-name: "player" },
     button { on-click: on-reset-player }, "reset player"
-    messages { history }
+    messages { graph, history }
     answers { graph, current-node, on-decision } if (graph.out-edges current-node)?.length > 0
 
 

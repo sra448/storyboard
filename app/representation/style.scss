@@ -6,6 +6,11 @@ button:focus, textarea:focus, input:focus {
   outline: 0;
 }
 
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   background-color: #fff;
   background-image: linear-gradient(rgba(82,194,206,.3) 1px, transparent 1px),
@@ -15,17 +20,20 @@ body {
 }
 
 .storyboard {
-  display: flex;
   width: 100%;
-  justify-content: center;
 
   .player {
-    flex: 0 0 200px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 160px;
+    height: 400px;
+    background-color: #eff6ff;
+    display: flex;
+    flex-direction: column;
 
     > div {
-      width: 100%;
-      height: 400px;
-      background-color: #eff6ff;
+      overflow-y: scroll;
 
       .message {
         padding: 4px;
@@ -50,6 +58,12 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+
+    > button {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
 
     line {
       stroke: black;
