@@ -67,6 +67,11 @@ body {
 
     line {
       stroke: black;
+      z-index: 999999;
+    }
+
+    marker {
+      z-index: 999;
     }
 
     .nodes {
@@ -75,13 +80,19 @@ body {
 
     .node {
       position: absolute;
-      margin-top: 1px;
-      width: 89px;
-      height: 49px;
+      margin-top: -2px;
+      margin-left: -2px;
+      width: 93px;
+      height: 53px;
       padding: 4px;
-      background-color: rgba(113, 212, 222, 0.59);
+      background-color: rgba(113, 212, 222, 0.8);
       border: 1px solid #52c2ce;
       cursor: pointer;
+
+      &.us {
+        border: 1px solid #71dde8;
+        background-color: rgba(156, 237, 245, 0.67);
+      }
 
       textarea {
         width: 100%;
