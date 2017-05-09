@@ -75,10 +75,14 @@ button:focus, textarea:focus, input:focus {
 
     line, path {
       stroke: black;
-      z-index: 999999;
       fill: none;
     }
 
+    line.border, path.border {
+      stroke: white;
+      fill: none;
+      stroke-width: 5;
+    }
 
     .nodes {
       position: relative;

@@ -31,9 +31,13 @@ edge = ({ graph, v, w }) ->
   if y2 <= y1
     width = x2 - x1
     height = y1 - y2
-    path { d: "M#{x1} #{y1} v20 h#{if x2 < x1 then 70 else -70} v-#{height + 40} h#{x2 - x1 + if x2 < x1 then -70 else 70} v20", marker-end: "url(\#arrow)" }
+    g {},
+      path { class-name: "border", d: "M#{x1} #{y1} v20 h#{if x2 < x1 then 70 else -70} v-#{height + 40} h#{x2 - x1 + if x2 < x1 then -70 else 70} v20" }
+      path { d: "M#{x1} #{y1} v20 h#{if x2 < x1 then 70 else -70} v-#{height + 40} h#{x2 - x1 + if x2 < x1 then -70 else 70} v20", marker-end: "url(\#arrow)" }
   else
-    line { key: "#{v}:#{w}", marker-end: "url(\#arrow)", x1, y1, x2, y2: y2 - 2 }
+    g {},
+      line { class-name: "border", x1, y1, x2, y2: y2 - 2 }
+      line { marker-end: "url(\#arrow)", x1, y1, x2, y2: y2 - 2 }
 
 
 edges = ({ graph, temp-edge }) ->
