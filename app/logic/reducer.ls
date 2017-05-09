@@ -13,13 +13,13 @@ retrieve-data = ->
 
 
 reset-player = (state) ->
-  history = [{ who: \him, id: "0" }]
+  history = [{ who: \him, id: "0", date: new Date }]
   { ...state, history, current-node: "0" }
 
 
 reset-editor = (state) ->
-  history = [{ who: \him, id: "hello?" }]
-  { ...state, history, graph: (new Graph).set-node "0", { who: \him, id: "hello?" } }
+  history = [{ who: \him, id: "0", date: new Date }]
+  { ...state, history, graph: (new Graph).set-node "0", { text: "hello?", x: 300, y: 40  } }
 
 
 change-node-text = (state, id, text) ->
