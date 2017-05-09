@@ -56,8 +56,8 @@ add-child-node = (state, parent-id) ->
 
 choose-next-node = (state, id) ->
   answer = (state.graph.out-edges id)?[0] || {}
-  me = { who: \me, id: id }
-  him = { who: \him, id: answer.w }
+  me = { who: \me, id: id, date: new Date }
+  him = { who: \him, id: answer.w, date: new Date }
   history = [...state.history, me, him]
   { ...state, history, current-node: answer.w }
 
@@ -88,7 +88,7 @@ close-temp-edge = (state) ->
 initial-state = retrieve-data() || do
   foo: 1 # this is a hack, since the graph is being mutated :/
   current-node: 0
-  history: [{ who: \him, id: "0" }]
+  history: [{ who: \him, id: "0", date: new Date }]
   temp-edge: undefined
   graph: (new Graph).set-node "0", { text: "hello?", x: 300, y: 50 }
 
