@@ -16,29 +16,28 @@ store = create-store reducer
 app = create-element Provider, { store }, ui {}
 
 
-clicks = Observable.fromEvent ROOT, "click"
-mouse-down = Observable.fromEvent ROOT, \mousedown
-mouse-move = Observable.fromEvent ROOT, \mousemove
-mouse-up = Observable.fromEvent ROOT, \mouseup
+mouse-down$ = Observable.fromEvent ROOT, \mousedown
+mouse-move$ = Observable.fromEvent ROOT, \mousemove
+mouse-up$ = Observable.fromEvent ROOT, \mouseup
 
 
-draw-edge = do
-  mouse-down
+draw-edge$ = do
+  mouse-down$
     .filter ({ target }) -> target.class-name == "new-edge"
     .do (e) -> e.stop-propagation()
     .flat-map ({ target }) ->
       id = target.id
-      mouse-move
+      mouse-move$
         .map mouse-coords-to-tile-coords
         .distinct-until-changed!
         .map ({ x, y }) -> { type: \CHANGE_TEMP_EDGE_POSITION, x, y }
         .start-with { type: \ADD_TEMP_EDGE, id }
-        .take-until mouse-up
+        .take-until mouse-up$
         .concat Observable.return { type: \CLOSE_TEMP_EDGE }
 
 
 
-draw-edge.subscribe (action) ->
+draw-edge$.subscribe (action) ->
   store.dispatch action
 
 
