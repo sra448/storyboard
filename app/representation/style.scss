@@ -1,9 +1,6 @@
-textarea {
-  outline:0px none transparent;
-}
-
-button:focus, textarea:focus, input:focus {
-  outline: 0;
+html, body {
+  padding: 0;
+  margin: 0;
 }
 
 html, body {
@@ -17,6 +14,22 @@ body {
                     linear-gradient(90deg, rgba(82,194,206,.3) 1px, transparent 1px);
   background-size: 20px 20px, 20px 20px;
   background-position: -1px -1px, -1px -1px;
+}
+
+textarea {
+  outline:0px none transparent;
+}
+
+dl {
+  margin: 0;
+}
+
+dd {
+  font-size: .6em;
+}
+
+button:focus, textarea:focus, input:focus {
+  outline: 0;
 }
 
 .storyboard {
@@ -65,8 +78,15 @@ body {
       top: 20px;
     }
 
-    line {
+    line, path {
       stroke: black;
+      fill: none;
+    }
+
+    line.border, path.border {
+      stroke: white;
+      fill: none;
+      stroke-width: 5;
     }
 
     .nodes {
@@ -75,13 +95,19 @@ body {
 
     .node {
       position: absolute;
-      margin-top: 1px;
-      width: 89px;
-      height: 49px;
+      margin-top: -2px;
+      margin-left: -2px;
+      width: 93px;
+      height: 53px;
       padding: 4px;
-      background-color: rgba(113, 212, 222, 0.59);
+      background-color: rgba(113, 212, 222, 0.8);
       border: 1px solid #52c2ce;
       cursor: pointer;
+
+      &.us {
+        border: 1px solid #71dde8;
+        background-color: rgba(156, 237, 245, 0.67);
+      }
 
       textarea {
         width: 100%;

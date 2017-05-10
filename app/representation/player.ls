@@ -1,12 +1,16 @@
 { connect } = require \react-redux
 { DOM } = require \react
-{ div, button } = DOM
+{ div, button, dl, dt, dd } = DOM
 
 
 messages = ({ graph, history }) ->
   div {},
-    for { who, id } in history
-      div { key: "m#{id}", class-name: "message #{who}"}, (graph.node id).text
+    for { who, id, date } in history
+      date = new Date date
+      div { key: "m#{id}#{+date}", class-name: "message #{who}"},
+        dl {},
+          dt {}, (graph.node id).text
+          dd {}, "#{date.get-hours()}:#{date.get-minutes()}"
 
 
 answers = ({ graph, current-node, on-decision }) ->
